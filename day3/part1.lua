@@ -15,7 +15,6 @@ local function findCommonChar(s1, s2)
 			return s2:sub(i, i)
 		end
 	end
-	return "e"
 end
 
 local sum_priority = 0
