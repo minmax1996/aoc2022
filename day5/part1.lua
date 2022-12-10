@@ -3,11 +3,11 @@ local crates = {
 	move = function(self, n, from, to)
 		n, from, to = tonumber(n), tonumber(from), tonumber(to)
 		-- get crated to move 
-    local crates = self.stacks[from]:sub(#self.stacks[from]-n+1,#self.stacks[from])
-    -- add new crates to stack with reversed order because crane can do 1 crate by movement
-    self.stacks[to] = (self.stacks[to] or "")..crates:reverse()
-    -- reslice original one
-    self.stacks[from] = self.stacks[from]:sub(1, #self.stacks[from]-n)
+		local crates = self.stacks[from]:sub(#self.stacks[from]-n+1,#self.stacks[from])
+		-- add new crates to stack with reversed order because crane can do 1 crate by movement
+		self.stacks[to] = (self.stacks[to] or "")..crates:reverse()
+		-- reslice original one
+		self.stacks[from] = self.stacks[from]:sub(1, #self.stacks[from]-n)
 	end,
 }
 
@@ -20,7 +20,7 @@ while f ~= nil do --parse creates setup
 	local i, j = string.find(line, "(%u)", 1)
 	while i ~= nil do
 		local stackn,crateName = (i - 2)//4+1, line:sub(i,j)
-    crates.stacks[stackn]=crateName..(crates.stacks[stackn] or "")
+		crates.stacks[stackn]=crateName..(crates.stacks[stackn] or "")
 		i, j = string.find(line, "(%u)", j + 1) -- find next
 	end
 end
