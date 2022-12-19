@@ -44,17 +44,13 @@ local ropes = {
 			-- for print
 			self.TPos = self:stepFollowPos(self.TPos, self.HPos)
 			local posKey = self.TPos["x"] .. ":" .. self.TPos["y"]
-			-- set in histpry if not exist
 			self.THistory[posKey] = self.THistory[posKey] or true
-			--print(posKey)
-			--self:print()
 		end
 	end,
 
 	stepFollowPos = function(self, currectPos, followPos)
 		local deltax = followPos["x"] - currectPos["x"]
 		local deltay = followPos["y"] - currectPos["y"]
-
 		if math.abs(deltax) <= 1 and math.abs(deltay) <= 1 then
 			return currectPos
 		end
@@ -102,11 +98,9 @@ local ropes = {
 }
 
 for line in io.lines("input.txt") do
-	local d, n = line:match("(%L) (%d)")
+	local d, n = line:match("(%L) (%d+)")
 	if d ~= nil and n ~= nil then
-		print(">> ", d, n)
 		ropes:moveHead(d, tonumber(n))
-		--ropes:print(false)
 	end
 end
 
@@ -115,4 +109,3 @@ for _ in pairs(ropes.THistory) do
 	positions = positions + 1
 end
 print(positions)
---ropes:print(true)
