@@ -46,65 +46,39 @@ for line in io.lines("input.txt") do
 	end
 end
 
-for key, value in pairs(inputPairs) do
-	--print(key, stringTable(value[1]), stringTable(value[2]))
-end
-
-local function compare(left, right, tt)
+local function compare(left, right)
 	local i = 1
-	print(tt.."Compare", stringTable(left), "vs", stringTable(right))
-	while left[i] do
-		if right[i] == nil then
-			print(tt.."- Right side ran out of items, so inputs are not in the right order")
-			return false
-		end
+	while left[i] and right[i] do
 		if type(left[i]) == "number" and type(right[i]) == "number" then
-			print(tt.."- Compare", left[i], "vs", right[i])
 			if left[i] ~= right[i] then
-				if left[i] < right[i] then
-					print(tt.."\t- Left side is smaller, so inputs are in the right order")
-					return true, false
-				else
-					print(tt.."\t- Right side is smaller, so inputs are not in the right order")
-					return false, false
-				end
+				return left[i] - right[i]
 			end
 		elseif type(left[i]) == "table" and type(right[i]) == "table" then
-			print(tt.."- Compare", stringTable(left[i]), "vs", stringTable(right[i]))
-			local c, eq = compare(left[i], right[i], tt..'\t')
-			if not eq then
-				return c, false
+			local c = compare(left[i], right[i])
+			if c ~= 0 then
+				return c
 			end
 		elseif type(left[i]) == "number" and type(right[i]) == "table" then
-			print(tt.."- Compare", left[i], "vs", stringTable(right[i]))
-			local c, eq = compare({left[i]}, right[i], tt..'\t') 
-			if not eq then
-				return c, false
+			local c = compare({left[i]}, right[i]) 
+			if c ~= 0 then
+				return c
 			end
 		elseif type(left[i]) == "table" and type(right[i]) == "number" then
-			print(tt.."- Compare", stringTable(left[i]), "vs", right[i])
-			local c, eq = compare(left[i], {right[i]}, tt..'\t')
-			if not eq then
-				return c, false
+			local c = compare(left[i], {right[i]})
+			if c ~= 0 then
+				return c
 			end
 		end
 		i = i+1
 	end
-	print(tt.."- Left side ran out of items, so inputs are in the right order")
-	return right[i]~=nil, true
+	return #left - #right
 end
 
 local sum = 0
 for key, value in pairs(inputPairs) do
-	print("== Pair "..key.."==")
-	
-	local c, eq = compare(value[1], value[2], "")
-	if c then
-		print("pair", key, "is correct")
+	local c = compare(value[1], value[2])
+	if compare(value[1], value[2]) <= 0 then
 		sum = sum + key
 	end
-	--if key == 2 then
-	--	break
-	--end
 end
 print(sum)
